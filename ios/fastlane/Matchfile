@@ -1,0 +1,9 @@
+git_url("https://github.com/YOUR_USERNAME/ios-certificates.git")
+
+storage_mode("git")
+
+type("appstore")
+
+app_identifier(["com.rkandukuri.aijobsearch"])
+
+username("YOUR_APPLE_ID_EMAIL")

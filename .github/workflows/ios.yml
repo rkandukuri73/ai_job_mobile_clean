@@ -1,0 +1,54 @@
+name: Flutter iOS Fastlane Build
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  ios:
+    runs-on: macos-latest
+
+    steps:
+
+      # Checkout
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.0'
+          channel: stable
+
+      # Flutter dependencies
+      - name: Install Flutter Dependencies
+        run: |
+          flutter clean
+          flutter pub get
+
+      # Install CocoaPods
+      - name: Install CocoaPods
+        run: |
+          gem install cocoapods
+          pod --version
+
+      # Install Fastlane
+      - name: Install Fastlane
+        run: |
+          gem install fastlane
+
+      # Build using Fastlane
+      - name: Build IPA
+        run: |
+          cd ios
+          fastlane build
+
+      # Upload IPA
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa
+          path: build/ios/ipa/*.ipa

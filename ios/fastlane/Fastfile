@@ -1,0 +1,25 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Build iOS IPA"
+
+  lane :build do
+
+    match(
+      type: "appstore",
+      readonly: true
+    )
+
+    sh("cd .. && flutter clean")
+    sh("cd .. && flutter pub get")
+
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store"
+    )
+
+  end
+
+end
