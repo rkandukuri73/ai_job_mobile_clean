@@ -58,8 +58,18 @@ jobs:
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security import ios_certificate.p12 -k build.keychain -P "abc123" -A
 
+      - name: Configure iOS Signing
+        run: |
+          cd ios
+
+          /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.rkandukuri.aijobsearch" Runner/Info.plist
+
+          sed -i '' 's/com.example.aiJobMobileClean/com.rkandukuri.aijobsearch/g' Runner.xcodeproj/project.pbxproj
+
       - name: Build Signed IPA
-        run: flutter build ipa --release
+        run: |
+          flutter build ipa --release \
+            --export-options-plist=ios/ExportOptions.plist
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
