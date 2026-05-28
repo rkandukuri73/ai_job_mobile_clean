@@ -6,18 +6,19 @@ platform :ios do
 
   lane :build do
 
-    match(
-      type: "appstore",
-      readonly: true
-    )
-
     sh("cd .. && flutter clean")
     sh("cd .. && flutter pub get")
+
+    cocoapods(
+      clean_install: true
+    )
 
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store"
+      export_method: "app-store",
+      clean: true,
+      output_directory: "../build/ios/ipa"
     )
 
   end
