@@ -124,7 +124,7 @@ jobs:
             DEVELOPMENT_TEAM=59MQFXV295 \
             PRODUCT_BUNDLE_IDENTIFIER=com.rkandukuri.aijobsearch \
             CODE_SIGN_STYLE=Manual \
-            PROVISIONING_PROFILE_SPECIFIER="AIJobSearchProfile"
+            PROVISIONING_PROFILE_SPECIFIER="AIJobSearcherProfile"
 
       - name: Export IPA
         run: |
