@@ -50,13 +50,26 @@ jobs:
           echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
 
       - name: Setup Keychain
-        env:
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-        run: |
-          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security import ios_certificate.p12 -k build.keychain -P "abc123" -A
+  env:
+    KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+    run: |
+      security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+      security default-keychain -s build.keychain
+      security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+
+      security import ios_certificate.p12 \
+        -k build.keychain \
+        -P "abc123" \
+        -T /usr/bin/codesign \
+        -T /usr/bin/security
+
+      security set-key-partition-list \
+        -S apple-tool:,apple:,codesign: \
+        -s \
+        -k "$KEYCHAIN_PASSWORD" \
+        build.keychain
+
+      security find-identity -v -p codesigning
 
       - name: Configure iOS Signing
         run: |
