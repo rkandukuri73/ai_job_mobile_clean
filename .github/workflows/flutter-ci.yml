@@ -106,9 +106,7 @@ jobs:
             DEVELOPMENT_TEAM=59MQFXV295 \
             PRODUCT_BUNDLE_IDENTIFIER=com.rkandukuri.aijobsearch \
             CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER="AIJobSearcherProfile" \
-            PROVISIONING_PROFILE="AIJobSearcherProfile"
+            CODE_SIGN_IDENTITY="Apple Distribution"
 
       - name: Export IPA
         run: |
