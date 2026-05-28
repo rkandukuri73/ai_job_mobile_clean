@@ -35,10 +35,11 @@ jobs:
         run: |
           openssl x509 -inform DER -in distribution.cer -out distribution.pem
           openssl pkcs12 -export \
-            -legacy \
             -out ios_certificate.p12 \
             -inkey ios.key \
             -in distribution.pem \
+            -certpbe PBE-SHA1-3DES \
+            -keypbe PBE-SHA1-3DES \
             -password pass:abc123
 
       - name: Decode Provisioning Profile
