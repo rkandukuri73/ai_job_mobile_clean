@@ -53,6 +53,24 @@ jobs:
           echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode > \
           ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
 
+      - name: Show Provisioning Profile Name
+        run: |
+          security cms -D \
+            -i ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision \
+            > profile.plist
+
+          /usr/libexec/PlistBuddy \
+            -c "Print :Name" \
+            profile.plist
+
+          /usr/libexec/PlistBuddy \
+            -c "Print :TeamIdentifier:0" \
+            profile.plist
+
+          /usr/libexec/PlistBuddy \
+            -c "Print :Entitlements:application-identifier" \
+            profile.plist
+
       - name: Setup Keychain
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
